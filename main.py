@@ -1,9 +1,9 @@
 import os
+import argparse
 from dotenv import load_dotenv
 from google import genai
 
 llm_model = "gemini-2.5-flash"
-llm_request = "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
 
 
 def main():
@@ -14,7 +14,11 @@ def main():
 
     client = genai.Client(api_key=api_key)
 
-    response = client.models.generate_content(model=llm_model, contents=llm_request)
+    parser = argparse.ArgumentParser(description="AI agent for code generation")
+    parser.add_argument("user_prompt", type=str, help="User prompt")
+    args = parser.parse_args()
+
+    response = client.models.generate_content(model=llm_model, contents=args.user_prompt)
     if response.usage_metadata is None:
         raise RuntimeError("No usage metadate: probebly failed API request")
     print(
