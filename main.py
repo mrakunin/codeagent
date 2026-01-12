@@ -3,11 +3,9 @@ import argparse
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from config import llm_model
 from config import system_prompt
-from call_function import available_functions
-
-
-llm_model = "gemini-2.5-flash"
+from config import available_functions
 
 
 def main():
