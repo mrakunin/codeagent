@@ -26,10 +26,8 @@ def main():
         model=llm_model,
         contents=messages,
         config=types.GenerateContentConfig(
-            tools=[available_functions],
-            system_instruction=system_prompt,
-            temperature=0
-        )
+            tools=[available_functions], system_instruction=system_prompt, temperature=0
+        ),
     )
     if response.usage_metadata is None:
         raise RuntimeError("No usage metadata: probebly failed API request")
