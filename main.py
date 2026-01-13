@@ -63,7 +63,6 @@ def main():
                     raise Exception("Error: response field is missing")
 
                 function_results.append(result.parts[0])
-                print(function_results)
 
                 if args.verbose:
                     print(f"-> {result.parts[0].function_response.response}")
