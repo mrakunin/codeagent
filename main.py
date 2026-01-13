@@ -6,6 +6,7 @@ from google.genai import types
 from config import llm_model
 from config import system_prompt
 from config import available_functions
+from call_function import call_function
 
 
 def main():
@@ -37,12 +38,25 @@ def main():
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
 
+    function_results = []
     # print functions calls if available
     if response.function_calls is None:
         print(response.text)
     else:
         for call in response.function_calls:
-            print(f"Calling function: {call.name}({call.args})")
+            result = call_function(call)
+
+            if result.parts is None:
+                raise Exception("Error: parts field is missing")
+            if result.parts[0].function_response is None:
+                raise Exception("Error: function_response field is missing")
+            if result.parts[0].function_response.response is None:
+                raise Exception("Error: response field is missing")
+
+            function_results += result.parts[0]
+
+            if args.verbose:
+                print(f"-> {result.parts[0].function_response.response}")
 
 
 if __name__ == "__main__":
